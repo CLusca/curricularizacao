@@ -1,0 +1,80 @@
+body {
+    background-color: #e6f7e9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.app-header {
+    background-color: #ffffff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.app-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-header h1 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.btn-servicos {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.2s ease;
+}
+
+.btn-servicos:hover {
+    background-color: #74db7a;
+    scale: 1.15;
+}
+
+.app-main {
+    padding-top: 2.5rem;
+}
+
+.content-box {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.content-box h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.content-box p {
+    color: #555;
+    line-height: 1.6;
+}
+
+.logout-icon{
+    transition: scale 0.3s ease;
+    width:30px;
+    height:30px;
+
+}
+
+.logout-icon:hover {
+    scale: 1.3;
+}

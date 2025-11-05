@@ -9,16 +9,22 @@ usuario.addEventListener('input', function() {
 
 btnLogin.addEventListener('click', function(){
     if(verificarSePreenchido() == true){
-        if(btnLogin.disabled == true) return;
+        login(`${usuario.value}-${senha.value}`);
+    }
+})
 
-        btnLogin.disabled = true;
-        btnLogin.innerHTML = `<div id="miniLoader"></div>`;
-
+senha.addEventListener('keydown', function(event){
+    if(verificarSePreenchido() == true &&  (event.key === 'Enter')){
         login(`${usuario.value}-${senha.value}`);
     }
 })
 
 async function login(chave){
+    if(btnLogin.disabled == true) return;
+
+    btnLogin.disabled = true;
+    btnLogin.innerHTML = `<div id="miniLoader"></div>`;
+
     try{
         const requisicao = await fetch("./backend/login.php", {
             method: 'POST',

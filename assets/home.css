@@ -11,20 +11,20 @@ body {
     margin: 0 auto;
 }
 
-.app-header {
+header{
     background-color: #ffffff;
     padding: 1rem 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
 }
 
-.app-header .container {
+header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.app-header h1 {
+header h1 {
     margin: 0;
     color: #333;
     font-size: 1.5rem;
@@ -45,7 +45,7 @@ body {
     background-color: #29792d;
 }
 
-.app-main {
+main {
     padding-top: 2.5rem;
 }
 

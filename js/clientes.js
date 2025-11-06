@@ -1,9 +1,9 @@
-const btnLogout       = document.getElementById('btn_logout');
-const btnInicio       = document.getElementById('btn-inicio'); 
-const btnClientes     = document.getElementById('btn-cliente'); 
-const btnNovoCliente  = document.getElementById('btn-novo-cliente');
-const popupBackground = document.getElementById('popupBackground');
-const popupContent    = document.getElementById('popupContent')
+const btnLogout        = document.getElementById('btn_logout');
+const btnInicio        = document.getElementById('btn-inicio'); 
+const btnClientes      = document.getElementById('btn-cliente'); 
+const btnNovoCliente   = document.getElementById('btn-novo-cliente');
+const popupBackground  = document.getElementById('popupBackground');
+const popupContent     = document.getElementById('popupContent')
 
 btnLogout.addEventListener('click', ()=>{
     window.location.href = '../backend/logout.php';
@@ -18,10 +18,11 @@ btnClientes.addEventListener('click', ()=>{
 })
 
 btnNovoCliente.addEventListener('click', ()=>{
-    mostrarPopup()
+    mostrarPopup();
 })
 
 document.getElementById('closeBtn').addEventListener('click', fecharPopup);
+document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
 document.addEventListener('keydown', fecharPopup);
 
 function mostrarPopup(){
@@ -34,6 +35,5 @@ function fecharPopup(event){
     if (event.type === 'keydown' && event.key !== 'Escape') return;
 
     popupBackground.style.display = 'none';
-    popupContent.innerHTML        = '';
     document.body.style.overflow  = 'auto';
 }

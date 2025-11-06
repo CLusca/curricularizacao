@@ -30,10 +30,11 @@ header h1 {
     margin: 0 auto;
 }
 
-.btn-header{
+.btn-header,
+#popup-btn-adicionar{
     background-color: #4CAF50;
     color: white;
-    padding: 0.75rem 1.25rem;
+    padding: 15px;
     border: 0;
     border-radius: 4px;
     text-decoration: none;
@@ -44,7 +45,8 @@ header h1 {
 }
 
 .btn-header:hover,
-#btn-novo-cliente:hover {
+#btn-novo-cliente:hover,
+#popup-btn-adicionar:hover {
     background-color: #29792d;
 }
 
@@ -183,15 +185,13 @@ main {
 
 #popup {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     background: white;
-    /* width: auto; */
-    padding: 10px;
     width: 550px;
     height: 500px;
+    padding: 10px;
     border-radius: 10px;
-    justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     gap: 10px;
     position: relative;
 }
@@ -203,6 +203,27 @@ main {
     width: 90%;
     height: 80px;
     /* background-color: green; */
+}
+
+#popupContent{
+    width: 90%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    /* background-color: #29792d; */
+}
+
+#popupContent label{
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+#popupContent input{
+    padding: 10px;
+    border-radius: 5px;
+    border: 0;
+    background-color: rgb(233, 233, 233);
+    box-sizing: border-box;
 }
 
 #closeBtn{
@@ -223,3 +244,24 @@ main {
     color: red;
 }
 
+#popup-buttons{
+    display: flex;
+    margin-top: 10px;
+    justify-content: right;
+    gap: 10px;
+}
+
+#popup-btn-cancelar{
+    padding: 15px;
+    background-color: white;
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.2s;
+    cursor: pointer;
+}
+#popup-btn-cancelar:hover{
+    background-color: rgb(228, 228, 228);
+}

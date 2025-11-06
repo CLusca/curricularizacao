@@ -96,7 +96,7 @@ function telaClientes() {
                     <input type="text" placeholder="Digite o nome completo">
                     <label>Número de WhatsApp *</label>
                     <input type="text" placeholder="(00) 00000-0000">
-                    <label>CPF / CNPJ *</label>
+                    <label>CPF / CNPJ</label>
                     <input type="text" placeholder="00.000.000/0000-00">
                     <div id="popup-buttons">
                         <button id="popup-btn-cancelar">Cancelar</button>
@@ -144,12 +144,14 @@ function telaAgendamentos() {
                     </div>
                 </div>
                 <div id="popupContent">
-                    <label>Nome *</label>
-                    <input type="text" placeholder="Digite o nome completo">
-                    <label>Número de WhatsApp *</label>
-                    <input type="text" placeholder="(00) 00000-0000">
+                    <label>Cliente *</label>
+                    <select name="agendamento-cliente" id="agendamento-cliente" class="cadSelectInfos" required>
+                        <option value="">Selecione um cliente</option>
+                    </select>
                     <label>Data de Pagamento *</label>
                     <input type="text" placeholder="dd/mm/aaaa">
+                    <label>Meses *</label>
+                    <input type="text" placeholder="0">
                     <label>Valor a ser Pago *</label>
                     <input type="text" placeholder="R$ 0,00">
                     <div id="popup-buttons">

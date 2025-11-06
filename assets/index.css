@@ -93,3 +93,20 @@ main h2 {
         transform: rotate(360deg);
     }
 }
+
+.red{
+    background-color: #ff000032 !important;
+    border: 2px solid #ff000032 !important;
+
+    option{
+        color: rgb(2, 2, 2);
+    }
+}
+.green{
+    background-color: #66db6632 !important;
+    border: 2px solid #66db667d !important;
+
+    option{
+        color: rgb(2, 2, 2);
+    }
+}

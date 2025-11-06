@@ -23,8 +23,13 @@ btnAgendamentos.addEventListener('click', ()=>{
     telaAgendamentos();
 })
 
+btnDisparos.addEventListener('click', ()=>{
+    telaDisparos();
+})
+
 function telaInicio() {
     document.getElementById('tituloOpcao').textContent = 'Sistema de Cobrança';
+    document.title = "Inicio - Sistema de Cobrança";
 
     main.innerHTML =
         `<div class="medium-box">
@@ -67,6 +72,7 @@ function telaInicio() {
 
 function telaClientes() {
    document.getElementById('tituloOpcao').textContent = 'Clientes'; 
+   document.title = "Clientes - Sistema de Cobrança";
 
    main.innerHTML = 
    `<div class="big-box">
@@ -119,6 +125,7 @@ function telaClientes() {
 
 function telaAgendamentos() {
     document.getElementById('tituloOpcao').textContent = 'Agendamentos';
+    document.title = "Agendamentos - Sistema de Cobrança";
 
     main.innerHTML =
     `<div class="big-box">
@@ -128,6 +135,60 @@ function telaAgendamentos() {
             </div>
             <div>
                 <button id="btn-novo-agendamento"><img src="../assets/images/plus.svg" alt=""> Novo Agendamento</button>
+            </div>
+            <div class="box-text">
+            </div>
+        </div>
+        <div id="popupBackground">
+            <div id="popup">
+                <div id="popup-header">
+                    <p>
+                        <b>Novo Agendamento</b>
+                        <br>Preencha os dados do novo agendamento
+                    </p>
+                    <div id="closeBtn">
+                        <span>&times;</span>
+                    </div>
+                </div>
+                <div id="popupContent">
+                    <label>Cliente *</label>
+                    <select name="agendamento-cliente" id="agendamento-cliente" class="cadSelectInfos" required>
+                        <option value="">Selecione um cliente</option>
+                    </select>
+                    <label>Data de Pagamento *</label>
+                    <input type="text" placeholder="dd/mm/aaaa">
+                    <label>Meses *</label>
+                    <input type="text" placeholder="0">
+                    <label>Valor a ser Pago *</label>
+                    <input type="text" placeholder="R$ 0,00">
+                    <div id="popup-buttons">
+                        <button id="popup-btn-cancelar">Cancelar</button>
+                        <button id="popup-btn-adicionar">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
+
+        btnNovoAgendamento.addEventListener('click', ()=>{
+            mostrarPopup();
+        })
+
+        document.getElementById('closeBtn').addEventListener('click', fecharPopup);
+        document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
+        document.addEventListener('keydown', fecharPopup);
+}
+
+function telaDisparos() {
+    document.getElementById('tituloOpcao').textContent = 'Disparos';
+    document.title = "Disparos - Sistema de Cobrança";
+
+    main.innerHTML =
+    `<div class="big-box">
+            <div class="box-header">
+                <b>Gerenciar Disparos</b>
+                <p>Gerencie seus disparos de cobranças</p>
             </div>
             <div class="box-text">
             </div>

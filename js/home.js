@@ -99,11 +99,11 @@ function telaClientes() {
                 </div>
                 <div id="popupContent">
                     <label>Nome *</label>
-                    <input type="text" placeholder="Digite o nome completo">
+                    <input id="input-nome" type="text" placeholder="Digite o nome completo" required>
                     <label>Número de WhatsApp *</label>
-                    <input type="text" placeholder="(00) 00000-0000">
+                    <input id="input-telefone" type="text" placeholder="(00) 00000-0000" required>
                     <label>CPF / CNPJ</label>
-                    <input type="text" placeholder="00.000.000/0000-00">
+                    <input id="input-cnpj_cpf" type="text" placeholder="00.000.000/0000-00" required>
                     <div id="popup-buttons">
                         <button id="popup-btn-cancelar">Cancelar</button>
                         <button id="popup-btn-adicionar">Adicionar</button>
@@ -112,7 +112,8 @@ function telaClientes() {
             </div>
         </div>`;
 
-        const btnNovoCliente   = document.getElementById('btn-novo-cliente');
+        const btnNovoCliente = document.getElementById('btn-novo-cliente');
+        const btnAdicionar   = document.getElementById('popup-btn-adicionar');  
 
         btnNovoCliente.addEventListener('click', ()=>{
             mostrarPopup();
@@ -121,6 +122,57 @@ function telaClientes() {
         document.getElementById('closeBtn').addEventListener('click', fecharPopup);
         document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
         document.addEventListener('keydown', fecharPopup);
+
+       btnAdicionar.addEventListener('click', ()=>{
+            if(verificarSePreenchido() == true){
+                const nome     = document.getElementById('input-nome').value;
+                const telefone = document.getElementById('input-telefone').value.replace(/[^\d]+/g, '');
+                const cnpj_cpf = document.getElementById('input-cnpj_cpf').value.replace(/[^\d]+/g, '');
+
+                const chave = {
+                    'nome' : nome,
+                    'telefone' : telefone,
+                    'cnpj_cpf' : cnpj_cpf
+                    
+                }
+
+                if(!validarTelefoneBR(telefone)){
+                    alert('Número Inválido!');
+                    return;
+                }
+
+                if(!validarCPFouCNPJ(cnpj_cpf)){
+                    alert('CPF/CNPJ Inválido!');
+                    return;
+                }
+
+                salvarCliente(chave);
+           }
+       })
+
+       async function salvarCliente(chave){
+            try{
+                const requisicao = await fetch('../backend/salvarCliente.php',{
+                    method: 'POST',
+                    body: JSON.stringify(chave)
+                });
+
+                if(requisicao.ok == false){
+                    alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                    return;
+                }
+
+                const resposta = await requisicao.json();
+                
+                if(resposta.status == 200){
+                    alert('Cliente gravado com sucesso!');
+                    return;
+                }
+                
+            } catch(e){
+                console.error(e);
+            }
+       }
 }
 
 function telaAgendamentos() {

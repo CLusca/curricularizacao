@@ -46,6 +46,7 @@ header h1 {
 
 .btn-header:hover,
 #btn-novo-cliente:hover,
+#btn-novo-agendamento:hover,
 #popup-btn-adicionar:hover {
     background-color: #29792d;
 }
@@ -148,7 +149,8 @@ main {
 
 /*  --------------- Clientes ---------------- */
 
-#btn-novo-cliente{
+#btn-novo-cliente,
+#btn-novo-agendamento{
     display: flex;
     align-items: center;
     justify-content: center;

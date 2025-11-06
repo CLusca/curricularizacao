@@ -24,3 +24,15 @@ function verificarSePreenchido(){
 
     return todosPreenchidos;
 }
+
+function mostrarPopup(){
+    document.body.style.overflow = 'hidden';
+    popupBackground.style.display = 'flex';
+}
+
+function fecharPopup(event){
+    if (event.type === 'keydown' && event.key !== 'Escape') return;
+
+    popupBackground.style.display = 'none';
+    document.body.style.overflow  = 'auto';
+}

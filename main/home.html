@@ -13,8 +13,8 @@
     <header>
         <h1>Sistema de Cobrança</h1>
         <div class="header-container">
-            <div class="btn-header">Dashboard</div>
-            <div class="btn-header">Clientes</div>
+            <div class="btn-header" id="btn-inicio">Inicio</div>
+            <div class="btn-header" id="btn-cliente">Clientes</div>
         </div>
         <img id="btn_logout" src="../assets/images/sair.svg" alt="Ícone de Logout">
     </header>
@@ -55,6 +55,14 @@
             </div>
             <div class="box-text">
             </div>
+        </div>
+        <div id="popup">
+            <div id="emitirDivButtons">
+                <div id="closeBtn">
+                    <span>&times;</span>
+                </div>
+            </div>
+            <div id="popupContent"></div>
         </div>
     </main>
 </body>

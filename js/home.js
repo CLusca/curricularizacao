@@ -322,7 +322,7 @@ function telaDisparos() {
 
         const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
         btnNovoAgendamento.addEventListener('click', ()=>{
-            mostrarPopup();
+            telaAgendamentos();
         })
 
         document.getElementById('closeBtn').addEventListener('click', fecharPopup);

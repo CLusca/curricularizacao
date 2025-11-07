@@ -53,7 +53,7 @@
 
         if(!$result){
             http_response_code(500);
-            error_log("Erro ao Executar SELECT na Tabela FGPFJ");
+            error_log("Erro ao Executar SELECT na Tabela AGENDAMENTOS");
             return;
         } 
 

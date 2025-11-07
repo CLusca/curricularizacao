@@ -53,7 +53,7 @@
 
         if(!$result){
             http_response_code(500);
-            error_log("Erro ao Executar SELECT na Tabela FGPFJ");
+            error_log("Erro ao Executar SELECT na Tabela CLIENTES");
             return;
         } 
 
@@ -64,13 +64,13 @@
             
             if(!$result2){
                 http_response_code(500);
-                error_log("Erro ao Executar UPDATE na Tabela FGPFJ");
+                error_log("Erro ao Executar UPDATE na Tabela CLIENTES");
                 return;
             }
 
             if(pg_affected_rows($result2) === 0) {
                 http_response_code(404);
-                error_log("Nenhuma Linha foi Modificada pelo UPDATE na Tabela FGPFJ");
+                error_log("Nenhuma Linha foi Modificada pelo UPDATE na Tabela CLIENTES");
                 return;
             }
         } else {
@@ -80,13 +80,13 @@
         
             if(!$result2){
                 http_response_code(500);
-                error_log("Erro ao Executar INSERT INTO na Tabela FGPFJ");
+                error_log("Erro ao Executar INSERT INTO na Tabela CLIENTES");
                 return;
             }
                     
             if(pg_affected_rows($result2) === 0) {
                 http_response_code(404);
-                error_log("Nenhuma Linha foi Modificada pelo INSERT INTO na Tabela FGPFJ");
+                error_log("Nenhuma Linha foi Modificada pelo INSERT INTO na Tabela CLIENTES");
                 return;
             }
         }

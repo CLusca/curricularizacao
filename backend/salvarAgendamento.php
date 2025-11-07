@@ -22,12 +22,20 @@
         return;
     }
 
+    function converterData($dataOriginal){
+        $dateObject = DateTime::createFromFormat('d/m/Y', $dataOriginal);
+        $dataConvertida = $dateObject->format('Y-m-d');
+
+        return $dataConvertida;
+    }
+
     $dados = json_decode(file_get_contents('php://input'), true);
 
-    $cliente  = $dados['cliente'];
-    $data     = $dados['data'];
-    $meses    = $dados['meses'];
-    $valor    = $dados['valor'];
+    $cliente    = $dados['cliente'];
+    $data       = converterData($dados['data']);
+    $meses      = $dados['meses'];
+    $valor      = $dados['valor'];
+    $id_empresa = $_SESSION['USUARIOS_id_empresa'];
 
     $host     = $_SESSION['banco_host'];
     $port     = $_SESSION['banco_porta'];
@@ -44,9 +52,9 @@
             return;
         }
 
-        $query  = "INSERT INTO agendamentos (id_cliente, data, valor)
-                    VALUES ($1, $2, $3)";    
-        $result = pg_query_params($conn, $query,array($cliente, $data, $valor));
+        $query  = "INSERT INTO agendamentos (id_cliente, data, valor, id_empresa)
+                    VALUES ($1, $2, $3, $4)";    
+        $result = pg_query_params($conn, $query,array($cliente, $data, $valor, $id_empresa));
 
         if(!$result){
             http_response_code(500);

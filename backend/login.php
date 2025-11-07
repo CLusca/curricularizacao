@@ -44,7 +44,7 @@
         $query  = "SELECT
                         id,
                         nome,
-                        empresa
+                        id_empresa
                     FROM usuarios
                     WHERE username = $1
                     AND senha = $2
@@ -61,7 +61,7 @@
                     $nomeSeparado                 = explode(".", $usuario);                   
                     $_SESSION['primeiroNome']     = $nomeSeparado[0];
                     $_SESSION['USUARIOS_id']      = $row['id'];
-                    $_SESSION['USUARIOS_empresa'] = $row['empresa'];
+                    $_SESSION['USUARIOS_id_empresa'] = $row['id_empresa'];
                 }
 
     //-----------------------------------Sistema Operacional----------------------------

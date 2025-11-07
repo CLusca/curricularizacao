@@ -322,6 +322,8 @@ function telaDisparos() {
             </div>
         </div>`;
 
+        mostrarDisparos();
+
         const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
         btnNovoAgendamento.addEventListener('click', ()=>{
             mostrarPopup();
@@ -361,20 +363,6 @@ async function dashboard() {
         valorPendente.textContent   = `R$ ${converterParaBrl(resposta.valorPendente)}`;
         enviosHoje.textContent      = resposta.enviosHoje;
 
-        // const tabela = document.getElementById('tabelaClientes');
-
-        // for (var i = 0; i < resposta.clientes.length; i++) {
-        //     var cliente = resposta.clientes[i];
-        //     var row = document.createElement('tr');
-        //     console.log(cliente);
-
-        //     row.innerHTML =
-        //         `<td>${cliente.nome}</td>
-        //         <td>${formatarTelefone(cliente.telefone)}</td>
-        //         <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
-        //     tabela.appendChild(row);
-        // }
-        
     } catch(e){
         console.error(e);
     }
@@ -450,6 +438,50 @@ async function dashboard() {
                     <td>${formatarTelefone(agendamento.telefone)}</td>
                     <td>R$ ${converterParaBrl(agendamento.valor)}</td>
                     <td>${agendamento.status}</td>`;
+                tabela.appendChild(row);
+            }
+            
+        } catch(e){
+            console.error(e);
+        }
+    }
+
+    async function mostrarDisparos(){
+        try{
+            const requisicao = await fetch('../backend/disparos.php',{
+                method: 'POST',
+                body: JSON.stringify()
+            });
+
+            if(requisicao.ok == false){
+                alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                return;
+            }
+
+            const resposta = await requisicao.json();
+            
+            if(resposta.status == 404){
+                alert('Nenhum Disparo Encontrado!');
+                return;
+            }
+
+            if(resposta.status != 200){
+                alert('Erro! Tente Novamente mais Tarde');
+                return;
+            }
+
+            const tabela = document.getElementById('tabelaDisparos');
+
+            for (var i = 0; i < resposta.disparos.length; i++) {
+                var disparo = resposta.disparos[i];
+                var row = document.createElement('tr');
+
+                row.innerHTML =
+                    `<td>${formatarDataUS(disparo.data)}</td>
+                    <td>${disparo.cliente}</td>
+                    <td>${formatarTelefone(disparo.telefone)}</td>
+                    <td>R$ ${converterParaBrl(disparo.valor)}</td>
+                    <td>${disparo.status}</td>`;
                 tabela.appendChild(row);
             }
             

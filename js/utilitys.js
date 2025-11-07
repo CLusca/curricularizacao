@@ -214,6 +214,17 @@ function formatarDataUS(valor){
     return `${diaFormatado}/${mesFormatado}/${ano}`;
 }
 
+function pegarDateHoje(){
+    var data = new Date();
+    var dia  = String(data.getDate()).padStart(2, '0');
+    var mes  = String(data.getMonth() + 1).padStart(2, '0');
+    var ano  = data.getFullYear();
+
+    var dataFormatada = ano + '-' + mes + '-' + dia;
+
+    return dataFormatada;
+}
+
 function converterParaBrl(valor){
     const valorInt = parseFloat(valor);
     return valorInt.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })

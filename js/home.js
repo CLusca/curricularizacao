@@ -215,7 +215,7 @@ function telaAgendamentos() {
                     </select>
 
                     <label>Data de Pagamento *</label>
-                    <input id="input-data" type="date" placeholder="dd/mm/aaaa" required>
+                    <input id="input-data" maxlength="10" type="text" placeholder="dd/mm/aaaa" required>
 
                     <label>Meses *</label>
                     <input id="input-meses" type="number" min="1" placeholder="0"required>
@@ -234,15 +234,25 @@ function telaAgendamentos() {
         mostrarAgendamentos();
 
         preencherSelectClientesAgendamentos();
+        
+        const inputData = document.getElementById('input-data');
 
         const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
         btnNovoAgendamento.addEventListener('click', ()=>{
+            inputData.value = formatarDataUS(pegarDateHoje());
             mostrarPopup();
         })
 
         document.getElementById('closeBtn').addEventListener('click', fecharPopup);
         document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
         document.addEventListener('keydown', fecharPopup);
+
+        inputData.addEventListener('input', function() {
+            let valor = inputData.value.replace(/\D/g, '');
+            if(valor.length === 8){
+                inputData.value = formatarDataBR(valor);
+            }
+        })
 
         const btnAdicionar = document.getElementById('popup-btn-adicionar'); 
         btnAdicionar.addEventListener('click', ()=>{
@@ -313,7 +323,6 @@ function telaDisparos() {
         </div>`;
 
         const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
-
         btnNovoAgendamento.addEventListener('click', ()=>{
             mostrarPopup();
         })

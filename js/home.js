@@ -43,14 +43,14 @@ function telaInicio() {
                 <img class="dashboard-img-orange" src="../assets/images/relogio.svg" alt="">
                 <div class="box-text">
                     <b>Envios Pendentes</b>
-                    <p>0</p>
+                    <p id="inicio-envios-pendentes">0</p>
                 </div>
             </div>
             <div class="medium-box">
                 <img class="dashboard-img-green" src="../assets/images/dolar.svg" alt="">
                 <div class="box-text">
                     <b>Valor Pendente</b>
-                    <p>R$ 0,00</p>
+                    <p id="inicio-valor-pendente">R$ 0,00</p>
                 </div>
             </div>
             <div class="medium-box">
@@ -344,8 +344,13 @@ async function dashboard() {
             return;
         }
 
-        const totalClientes = document.getElementById('inicio-total-clientes');
-        totalClientes.textContent = resposta.clientes;
+        const totalClientes   = document.getElementById('inicio-total-clientes');
+        const enviosPendentes = document.getElementById('inicio-envios-pendentes');
+        const valorPendente   = document.getElementById('inicio-valor-pendente');
+
+        totalClientes.textContent   = resposta.clientes;
+        enviosPendentes.textContent = resposta.enviosPendentes;
+        valorPendente.textContent = `R$ ${converterParaBrl(resposta.valorPendente)}`;
 
         // const tabela = document.getElementById('tabelaClientes');
 
@@ -434,7 +439,7 @@ async function dashboard() {
                     `<td>${formatarDataUS(agendamento.data)}</td>
                     <td>${agendamento.cliente}</td>
                     <td>${formatarTelefone(agendamento.telefone)}</td>
-                    <td>R$ ${agendamento.valor}</td>
+                    <td>R$ ${converterParaBrl(agendamento.valor)}</td>
                     <td>${agendamento.status}</td>`;
                 tabela.appendChild(row);
             }

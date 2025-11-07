@@ -37,16 +37,12 @@
             return;
         }
 
-        $query  = "SELECT nome,
-                        telefone,
-                        cnpj_cpf
-                    FROM clientes
-                    ORDER BY nome";    
-        $result = pg_query_params($conn, $query,array());
+        $query  = "SELECT nome FROM clientes";    
+        $result = pg_query_params($conn, $query, array());
 
         if(!$result){
             http_response_code(500);
-            error_log("Erro ao Executar SELECT na Tabela FGPFJ");
+            error_log("Erro ao Executar SELECT na Tabela CLIENTES");
             return;
         } 
 
@@ -56,10 +52,38 @@
             $clientes = 0;
         }
 
+        $query2  = "SELECT
+                        agendamentos.valor
+                    FROM agendamentos
+                    INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
+                    WHERE agendamentos.enviado = false";    
+        $result2 = pg_query_params($conn, $query2, array());
+
+        if(!$result2){
+            http_response_code(500);
+            error_log("Erro ao Executar SELECT na Tabela AGENDAMENTOS");
+            return;
+        } 
+
+        if (pg_num_rows($result2) > 0) {
+            $enviosPendentes = pg_num_rows($result2);
+            $valorPendente   = 0;
+
+            while ($row = pg_fetch_assoc($result2)) {
+                $valorPendente += $row['valor'];
+            }
+
+        } else {
+            $enviosPendentes = 0;
+            $valorPendente   = 0;
+        }
+
 
         $json = array(
-            'status'   => 200,
-            'clientes' => $clientes 
+            'status'          => 200,
+            'clientes'        => $clientes, 
+            'enviosPendentes' => $enviosPendentes,
+            'valorPendente'   => $valorPendente
         );
 
         echo json_encode($json);

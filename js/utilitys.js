@@ -214,6 +214,11 @@ function formatarDataUS(valor){
     return `${diaFormatado}/${mesFormatado}/${ano}`;
 }
 
+function converterParaBrl(valor){
+    const valorInt = parseFloat(valor);
+    return valorInt.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
 function mostrarPopup(){
     document.body.style.overflow = 'hidden';
     popupBackground.style.display = 'flex';

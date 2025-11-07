@@ -89,16 +89,12 @@ function telaClientes() {
                 </p>
                 <button id="btn-novo-cliente"><img src="../assets/images/plus.svg" alt=""> Novo Clientes</button>
             </div>
-            <div class="box-text">
-                <table id="tabelaClientes">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Telefone</th>
-                            <th>CNPJ/CPF</th>
-                        </tr>
-                    </thead>
-                </table>
+            <div id="box-content">
+                <div class="sem_dados">
+                    <img src="../assets/images/pessoas.svg">
+                    <p>Nenhum cliente encontrado</p>
+                    <p>Comece adicionando um novo cliente</p>
+                </div>
             </div>
         </div>
         <div id="popupBackground">
@@ -182,18 +178,12 @@ function telaAgendamentos() {
                 </p>
                 <button id="btn-novo-agendamento"><img src="../assets/images/plus.svg" alt=""> Novo Agendamento</button>
             </div>
-            <div class="box-text">
-                <table id="tabelaAgendamentos">
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Cliente</th>
-                            <th>Celular</th>
-                            <th>Valor</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                </table>
+            <div id="box-content">
+                <div class="sem_dados">
+                    <img src="../assets/images/relogio-historico.svg">
+                    <p>Nenhum agendamento encontrado</p>
+                    <p>Comece adicionando um novo agendamento</p>
+                </div>
             </div>
         </div>
         <div id="popupBackground">
@@ -287,8 +277,14 @@ function telaDisparos() {
                     <br>
                     Gerencie seus disparos de cobranças
                 </p>
+                <button id="btn-novo-agendamento">Ir para Agendamentos</button>
             </div>
-            <div class="box-text">
+            <div id="box-content">
+                <div class="sem_dados">
+                    <img src="../assets/images/enviar.svg">
+                    <p>Nenhum disparo encontrado</p>
+                    <p>Comece adicionando um novo agendamento</p>
+                </div>
             </div>
         </div>
         <div id="popupBackground">
@@ -388,7 +384,17 @@ async function dashboard() {
             }
 
 
-            const tabela = document.getElementById('tabelaClientes');
+            const boxContent = document.getElementById('box-content'); 
+            const tabela     = document.createElement('table');
+            const thead      = document.createElement('thead');
+            const tbody      = document.createElement('tbody');
+
+            thead.innerHTML =
+                `<tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>CNPJ/CPF</th>
+                </tr>`;
 
             for (var i = 0; i < resposta.clientes.length; i++) {
                 var cliente = resposta.clientes[i];
@@ -398,8 +404,14 @@ async function dashboard() {
                     `<td>${cliente.nome}</td>
                     <td>${formatarTelefone(cliente.telefone)}</td>
                     <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
-                tabela.appendChild(row);
+                tbody.appendChild(row);
             }
+
+            tabela.append(thead);
+            tabela.append(tbody);
+
+            boxContent.innerHTML = '';
+            boxContent.append(tabela);
             
         } catch(e){
             console.error(e);
@@ -425,8 +437,18 @@ async function dashboard() {
                 return;
             }
 
+            const boxContent = document.getElementById('box-content'); 
+            const tabela     = document.createElement('table');
+            const thead      = document.createElement('thead');
+            const tbody      = document.createElement('tbody');
 
-            const tabela = document.getElementById('tabelaAgendamentos');
+            thead.innerHTML =
+                `<tr>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Celular</th>
+                    <th>Valor</th>
+                </tr>`;
 
             for (var i = 0; i < resposta.agendamentos.length; i++) {
                 var agendamento = resposta.agendamentos[i];
@@ -436,11 +458,15 @@ async function dashboard() {
                     `<td>${formatarDataUS(agendamento.data)}</td>
                     <td>${agendamento.cliente}</td>
                     <td>${formatarTelefone(agendamento.telefone)}</td>
-                    <td>R$ ${converterParaBrl(agendamento.valor)}</td>
-                    <td>${agendamento.status}</td>`;
-                tabela.appendChild(row);
+                    <td>R$ ${converterParaBrl(agendamento.valor)}</td>`;
+                tbody.appendChild(row);
             }
-            
+
+            tabela.append(thead);
+            tabela.append(tbody);
+
+            boxContent.innerHTML = '';
+            boxContent.append(tabela);
         } catch(e){
             console.error(e);
         }
@@ -460,17 +486,28 @@ async function dashboard() {
 
             const resposta = await requisicao.json();
             
-            if(resposta.status == 404){
-                alert('Nenhum Disparo Encontrado!');
-                return;
-            }
+            // if(resposta.status == 404){
+            //     alert('Nenhum Disparo Encontrado!');
+            //     return;
+            // }
 
-            if(resposta.status != 200){
-                alert('Erro! Tente Novamente mais Tarde');
-                return;
-            }
+            // if(resposta.status != 200){
+            //     alert('Erro! Tente Novamente mais Tarde');
+            //     return;
+            // }
 
-            const tabela = document.getElementById('tabelaDisparos');
+            const boxContent = document.getElementById('box-content'); 
+            const tabela     = document.createElement('table');
+            const thead      = document.createElement('thead');
+            const tbody      = document.createElement('tbody');
+
+            thead.innerHTML =
+                `<tr>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Celular</th>
+                    <th>Valor</th>
+                </tr>`;
 
             for (var i = 0; i < resposta.disparos.length; i++) {
                 var disparo = resposta.disparos[i];
@@ -480,10 +517,15 @@ async function dashboard() {
                     `<td>${formatarDataUS(disparo.data)}</td>
                     <td>${disparo.cliente}</td>
                     <td>${formatarTelefone(disparo.telefone)}</td>
-                    <td>R$ ${converterParaBrl(disparo.valor)}</td>
-                    <td>${disparo.status}</td>`;
-                tabela.appendChild(row);
+                    <td>R$ ${converterParaBrl(disparo.valor)}</td>`;
+                tbody.appendChild(row);
             }
+
+            tabela.append(thead);
+            tabela.append(tbody);
+
+            boxContent.innerHTML = '';
+            boxContent.append(tabela);
             
         } catch(e){
             console.error(e);

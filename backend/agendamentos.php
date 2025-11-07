@@ -43,11 +43,11 @@
                         agendamentos.data,
                         clientes.nome,
                         clientes.telefone,
-                        agendamentos.valor,
-                        agendamentos.enviado
+                        agendamentos.valor
                     FROM agendamentos
                     INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
-                    WHERE agendamentos.id_empresa = $1
+                    WHERE agendamentos.enviado = false
+                    AND agendamentos.id_empresa = $1
                     ORDER BY agendamentos.data";    
         $result = pg_query_params($conn, $query,array($id_empresa));
 
@@ -69,8 +69,7 @@
                     'data'     => $row['data'],
                     'cliente'  => $row['nome'],
                     'telefone' => $row['telefone'],
-                    'valor'    => $row['valor'],
-                    'status'   => $status
+                    'valor'    => $row['valor']
                 );
 
                 $agendamentos[] = $agendamento;   

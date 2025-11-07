@@ -28,6 +28,8 @@
     $password = $_SESSION['banco_senha'];
     $dbname   = $_SESSION['banco_database'];  
 
+    $id_empresa = $_SESSION['USUARIOS_id_empresa'];
+
     $conn = pg_connect("host=$host port=$port user=$user password=$password dbname=$dbname");
 
     try{
@@ -43,8 +45,9 @@
                         telefone,
                         cnpj_cpf
                     FROM clientes
+                    WHERE id_empresa = $1
                     ORDER BY nome";    
-        $result = pg_query_params($conn, $query,array());
+        $result = pg_query_params($conn, $query,array($id_empresa));
 
         if(!$result){
             http_response_code(500);

@@ -34,6 +34,8 @@
     $password = $_SESSION['banco_senha'];
     $dbname   = $_SESSION['banco_database'];  
 
+    $id_empresa = $_SESSION['USUARIOS_id_empresa'];
+
     $conn = pg_connect("host=$host port=$port user=$user password=$password dbname=$dbname");
 
     try{
@@ -45,8 +47,9 @@
 
         $query  = "SELECT cnpj_cpf
                     FROM clientes
-                    WHERE cnpj_cpf = $1";    
-        $result = pg_query_params($conn, $query,array($cnpj_cpf));
+                    WHERE cnpj_cpf = $1
+                    AND id_empresa = $2";    
+        $result = pg_query_params($conn, $query,array($cnpj_cpf, $id_empresa));
 
         if(!$result){
             http_response_code(500);
@@ -55,8 +58,8 @@
         } 
 
         if (pg_num_rows($result) > 0) {
-            $query2 = "UPDATE clientes SET nome = $1, telefone = $2 WHERE cnpj_cpf = $3";
-            $result2 = pg_query_params($conn, $query2,array($nome, $telefone, $cnpj_cpf));
+            $query2 = "UPDATE clientes SET nome = $1, telefone = $2 WHERE cnpj_cpf = $3 AND id_empresa = $4";
+            $result2 = pg_query_params($conn, $query2,array($nome, $telefone, $cnpj_cpf, $id_empresa));
 
             
             if(!$result2){
@@ -71,9 +74,9 @@
                 return;
             }
         } else {
-             $query2 = "INSERT INTO clientes (nome, telefone, cnpj_cpf)
-                        VALUES ($1, $2, $3)";
-            $result2 = pg_query_params($conn, $query2, array($nome, $telefone, $cnpj_cpf));
+             $query2 = "INSERT INTO clientes (nome, telefone, cnpj_cpf, id_empresa)
+                        VALUES ($1, $2, $3, $4)";
+            $result2 = pg_query_params($conn, $query2, array($nome, $telefone, $cnpj_cpf, $id_empresa));
         
             if(!$result2){
                 http_response_code(500);

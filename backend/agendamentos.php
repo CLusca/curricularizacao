@@ -28,6 +28,8 @@
     $password = $_SESSION['banco_senha'];
     $dbname   = $_SESSION['banco_database'];  
 
+    $id_empresa = $_SESSION['USUARIOS_id_empresa'];
+
     $conn = pg_connect("host=$host port=$port user=$user password=$password dbname=$dbname");
 
     try{
@@ -45,8 +47,9 @@
                         agendamentos.enviado
                     FROM agendamentos
                     INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
+                    WHERE agendamentos.id_empresa = $1
                     ORDER BY agendamentos.data";    
-        $result = pg_query_params($conn, $query,array());
+        $result = pg_query_params($conn, $query,array($id_empresa));
 
         if(!$result){
             http_response_code(500);

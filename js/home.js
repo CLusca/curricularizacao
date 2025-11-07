@@ -131,8 +131,6 @@ function telaClientes() {
         mostrarClientes();
 
         const btnNovoCliente = document.getElementById('btn-novo-cliente');
-        const btnAdicionar   = document.getElementById('popup-btn-adicionar');  
-
         btnNovoCliente.addEventListener('click', ()=>{
             mostrarPopup();
         })
@@ -141,6 +139,7 @@ function telaClientes() {
         document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
         document.addEventListener('keydown', fecharPopup);
 
+        const btnAdicionar = document.getElementById('popup-btn-adicionar'); 
         btnAdicionar.addEventListener('click', ()=>{
             if(verificarSePreenchido() == true){
                 const nome     = document.getElementById('input-nome').value;
@@ -166,7 +165,7 @@ function telaClientes() {
 
                 salvarCliente(chave);
            }
-       })
+       });
 }
 
 function telaAgendamentos() {
@@ -184,6 +183,17 @@ function telaAgendamentos() {
                 <button id="btn-novo-agendamento"><img src="../assets/images/plus.svg" alt=""> Novo Agendamento</button>
             </div>
             <div class="box-text">
+                <table id="tabelaAgendamentos">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Celular</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div id="popupBackground">
@@ -193,6 +203,7 @@ function telaAgendamentos() {
                         <b>Novo Agendamento</b>
                         <br>Preencha os dados do novo agendamento
                     </p>
+
                     <div id="closeBtn">
                         <span>&times;</span>
                     </div>
@@ -202,12 +213,16 @@ function telaAgendamentos() {
                     <select name="agendamento-cliente" id="agendamento-cliente" class="cadSelectInfos" required>
                         <option value="">Selecione um cliente</option>
                     </select>
+
                     <label>Data de Pagamento *</label>
-                    <input type="text" placeholder="dd/mm/aaaa">
+                    <input id="input-data" type="date" placeholder="dd/mm/aaaa" required>
+
                     <label>Meses *</label>
-                    <input type="text" placeholder="0">
+                    <input id="input-meses" type="number" min="1" placeholder="0"required>
+
                     <label>Valor a ser Pago *</label>
-                    <input type="text" placeholder="R$ 0,00">
+                    <input id="input-valor" type="number" min="0" placeholder="R$ 0,00" required>
+
                     <div id="popup-buttons">
                         <button id="popup-btn-cancelar">Cancelar</button>
                         <button id="popup-btn-adicionar">Adicionar</button>
@@ -216,8 +231,11 @@ function telaAgendamentos() {
             </div>
         </div>`;
 
-        const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
+        mostrarAgendamentos();
 
+        preencherSelectClientesAgendamentos();
+
+        const btnNovoAgendamento = document.getElementById('btn-novo-agendamento');
         btnNovoAgendamento.addEventListener('click', ()=>{
             mostrarPopup();
         })
@@ -225,6 +243,28 @@ function telaAgendamentos() {
         document.getElementById('closeBtn').addEventListener('click', fecharPopup);
         document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
         document.addEventListener('keydown', fecharPopup);
+
+        const btnAdicionar = document.getElementById('popup-btn-adicionar'); 
+        btnAdicionar.addEventListener('click', ()=>{
+            if(verificarSePreenchido() == true){
+                const cliente = document.getElementById('agendamento-cliente').value;
+                const data    = document.getElementById('input-data').value;
+                const meses   = document.getElementById('input-meses').value.replace(/[^\d]+/g, '');
+                const valor   = document.getElementById('input-valor').value.replace(/[^\d]+/g, '');
+
+                const chave = {
+                    'cliente' : cliente,
+                    'data' : data,
+                    'meses' : meses,
+                    'valor' : valor
+                    
+                }
+
+                console.log(chave);
+
+                salvarAgendamento(chave);
+           }
+       });
 }
 
 function telaDisparos() {
@@ -304,8 +344,6 @@ async function dashboard() {
             return;
         }
 
-        console.log(resposta);
-
         const totalClientes = document.getElementById('inicio-total-clientes');
         totalClientes.textContent = resposta.clientes;
 
@@ -329,64 +367,165 @@ async function dashboard() {
     }
 
     async function mostrarClientes(){
-    try{
-        const requisicao = await fetch('../backend/clientes.php',{
-            method: 'POST',
-            body: JSON.stringify()
-        });
+        try{
+            const requisicao = await fetch('../backend/clientes.php',{
+                method: 'POST',
+                body: JSON.stringify()
+            });
 
-        if(requisicao.ok == false){
-            alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
-            return;
+            if(requisicao.ok == false){
+                alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                return;
+            }
+
+            const resposta = await requisicao.json();
+            
+            if(resposta.status != 200){
+                alert('Erro');
+                return;
+            }
+
+
+            const tabela = document.getElementById('tabelaClientes');
+
+            for (var i = 0; i < resposta.clientes.length; i++) {
+                var cliente = resposta.clientes[i];
+                var row = document.createElement('tr');
+
+                row.innerHTML =
+                    `<td>${cliente.nome}</td>
+                    <td>${formatarTelefone(cliente.telefone)}</td>
+                    <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
+                tabela.appendChild(row);
+            }
+            
+        } catch(e){
+            console.error(e);
         }
-
-        const resposta = await requisicao.json();
-        
-        if(resposta.status != 200){
-            alert('Erro');
-            return;
-        }
-
-
-        const tabela = document.getElementById('tabelaClientes');
-
-        for (var i = 0; i < resposta.clientes.length; i++) {
-            var cliente = resposta.clientes[i];
-            var row = document.createElement('tr');
-            console.log(cliente);
-
-            row.innerHTML =
-                `<td>${cliente.nome}</td>
-                <td>${formatarTelefone(cliente.telefone)}</td>
-                <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
-            tabela.appendChild(row);
-        }
-        
-    } catch(e){
-        console.error(e);
     }
+
+    async function mostrarAgendamentos(){
+        try{
+            const requisicao = await fetch('../backend/agendamentos.php',{
+                method: 'POST',
+                body: JSON.stringify()
+            });
+
+            if(requisicao.ok == false){
+                alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                return;
+            }
+
+            const resposta = await requisicao.json();
+            
+            if(resposta.status != 200){
+                alert('Erro');
+                return;
+            }
+
+
+            const tabela = document.getElementById('tabelaAgendamentos');
+
+            for (var i = 0; i < resposta.agendamentos.length; i++) {
+                var agendamento = resposta.agendamentos[i];
+                var row = document.createElement('tr');
+
+                row.innerHTML =
+                    `<td>${formatarDataUS(agendamento.data)}</td>
+                    <td>${agendamento.cliente}</td>
+                    <td>${formatarTelefone(agendamento.telefone)}</td>
+                    <td>R$ ${agendamento.valor}</td>
+                    <td>${agendamento.status}</td>`;
+                tabela.appendChild(row);
+            }
+            
+        } catch(e){
+            console.error(e);
+        }
     }
 
     async function salvarCliente(chave){
-    try{
-        const requisicao = await fetch('../backend/salvarCliente.php',{
-            method: 'POST',
-            body: JSON.stringify(chave)
-        });
+        try{
+            const requisicao = await fetch('../backend/salvarCliente.php',{
+                method: 'POST',
+                body: JSON.stringify(chave)
+            });
 
-        if(requisicao.ok == false){
-            alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
-            return;
-        }
+            if(requisicao.ok == false){
+                alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                return;
+            }
 
-        const resposta = await requisicao.json();
-        
-        if(resposta.status == 200){
-            alert('Cliente gravado com sucesso!');
-            return;
+            const resposta = await requisicao.json();
+            
+            if(resposta.status == 200){
+                alert('Cliente gravado com sucesso!');
+                return;
+            }
+            
+        } catch(e){
+            console.error(e);
         }
-        
-    } catch(e){
-        console.error(e);
     }
-}
+
+    async function salvarAgendamento(chave){
+        try{
+            const requisicao = await fetch('../backend/salvarAgendamento.php',{
+                method: 'POST',
+                body: JSON.stringify(chave)
+            });
+
+            if(requisicao.ok == false){
+                alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                return;
+            }
+
+            const resposta = await requisicao.json();
+            
+            if(resposta.status == 200){
+                alert('Agendamento gravado com sucesso!');
+                return;
+            }
+            
+        } catch(e){
+            console.error(e);
+        }
+    }
+
+    async function preencherSelectClientesAgendamentos(){
+        try{
+            const requisicao = await fetch('../backend/clientes.php',{
+                method: 'POST',
+                body: JSON.stringify()
+            });
+
+            if(requisicao.ok == false){
+                alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                return;
+            }
+
+            const resposta = await requisicao.json();
+            
+            if(resposta.status != 200){
+                alert('Erro');
+                return;
+            }
+
+            const clientesFrag = document.createDocumentFragment();
+            for(var i = 0; i < resposta.clientes.length; i++){
+                var cliente = resposta.clientes[i];
+                var option = document.createElement('option');
+                option.value = cliente.id;
+                option.textContent = cliente.nome;
+                clientesFrag.appendChild(option);
+            }
+
+            document.getElementById('agendamento-cliente').appendChild(clientesFrag);
+
+
+        
+            
+        } catch(e){
+            console.error(e);
+        }
+    }

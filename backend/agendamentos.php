@@ -38,12 +38,14 @@
         }
 
         $query  = "SELECT
-                        id,
-                        nome,
-                        telefone,
-                        cnpj_cpf
-                    FROM clientes
-                    ORDER BY nome";    
+                        agendamentos.data,
+                        clientes.nome,
+                        clientes.telefone,
+                        agendamentos.valor,
+                        agendamentos.enviado
+                    FROM agendamentos
+                    INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
+                    ORDER BY agendamentos.data";    
         $result = pg_query_params($conn, $query,array());
 
         if(!$result){
@@ -54,21 +56,28 @@
 
         if (pg_num_rows($result) > 0) {
             while ($row = pg_fetch_assoc($result)) {
-                $cliente = array(
-                    'id'       => $row['id'],
-                    'nome'     => $row['nome'],
+                if($row['enviado'] == 'f'){
+                    $status = 'Pendente';
+                } else {
+                    $status = 'Enviado';
+                }
+                
+                $agendamento = array(
+                    'data'     => $row['data'],
+                    'cliente'  => $row['nome'],
                     'telefone' => $row['telefone'],
-                    'cnpj_cpf' => $row['cnpj_cpf']
+                    'valor'    => $row['valor'],
+                    'status'   => $status
                 );
 
-                $clientes[] = $cliente;   
+                $agendamentos[] = $agendamento;   
             }
         }
 
 
         $json = array(
-            'status'   => 200,
-            'clientes' => $clientes 
+            'status'       => 200,
+            'agendamentos' => $agendamentos 
         );
 
         echo json_encode($json);

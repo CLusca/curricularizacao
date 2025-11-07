@@ -170,6 +170,50 @@ function formatarTelefone(valor) {
     }
 }
 
+function formatarDataBR(valor){
+    const data_original = String(valor).replace(/\D/g, '');
+
+    let dia = data_original.substring(0, 2);
+    let mes = data_original.substring(2, 4);
+    let ano = data_original.substring(4, 8);
+
+    if (mes < 1) mes  = 1;
+    if (mes > 12) mes = 12;
+
+    let ultimoDiaDoMes = new Date(ano, mes, 0).getDate();
+
+    if (dia > ultimoDiaDoMes) dia = ultimoDiaDoMes;
+
+    if (dia < 1) dia = 1;
+    
+    let diaFormatado = String(dia).padStart(2, '0');
+    let mesFormatado = String(mes).padStart(2, '0');
+
+    return `${diaFormatado}/${mesFormatado}/${ano}`;
+}
+
+function formatarDataUS(valor){
+    const data_original = String(valor).replace(/\D/g, '');
+
+    let dia = data_original.substring(6, 8);
+    let mes = data_original.substring(4, 6);
+    let ano = data_original.substring(0, 4);
+
+    if (mes < 1) mes  = 1;
+    if (mes > 12) mes = 12;
+
+    let ultimoDiaDoMes = new Date(ano, mes, 0).getDate();
+
+    if (dia > ultimoDiaDoMes) dia = ultimoDiaDoMes;
+
+    if (dia < 1) dia = 1;
+    
+    let diaFormatado = String(dia).padStart(2, '0');
+    let mesFormatado = String(mes).padStart(2, '0');
+
+    return `${diaFormatado}/${mesFormatado}/${ano}`;
+}
+
 function mostrarPopup(){
     document.body.style.overflow = 'hidden';
     popupBackground.style.display = 'flex';

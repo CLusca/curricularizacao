@@ -22,6 +22,13 @@
         return;
     }
 
+    $dados = json_decode(file_get_contents('php://input'), true);
+
+    $cliente  = $dados['cliente'];
+    $data     = $dados['data'];
+    $meses    = $dados['meses'];
+    $valor    = $dados['valor'];
+
     $host     = $_SESSION['banco_host'];
     $port     = $_SESSION['banco_porta'];
     $user     = $_SESSION['banco_usuario'];
@@ -37,39 +44,23 @@
             return;
         }
 
-        $query  = "SELECT
-                        id,
-                        nome,
-                        telefone,
-                        cnpj_cpf
-                    FROM clientes
-                    ORDER BY nome";    
-        $result = pg_query_params($conn, $query,array());
+        $query  = "INSERT INTO agendamentos (id_cliente, data, valor)
+                    VALUES ($1, $2, $3)";    
+        $result = pg_query_params($conn, $query,array($cliente, $data, $valor));
 
         if(!$result){
             http_response_code(500);
-            error_log("Erro ao Executar SELECT na Tabela FGPFJ");
+            error_log("Erro ao Executar UPDATE na Tabela AGENDAMENTOS");
             return;
-        } 
-
-        if (pg_num_rows($result) > 0) {
-            while ($row = pg_fetch_assoc($result)) {
-                $cliente = array(
-                    'id'       => $row['id'],
-                    'nome'     => $row['nome'],
-                    'telefone' => $row['telefone'],
-                    'cnpj_cpf' => $row['cnpj_cpf']
-                );
-
-                $clientes[] = $cliente;   
-            }
         }
 
+        if(pg_affected_rows($result) === 0) {
+            http_response_code(404);
+            error_log("Nenhuma Linha foi Modificada pelo UPDATE na Tabela AGENDAMENTOS");
+            return;
+        }
 
-        $json = array(
-            'status'   => 200,
-            'clientes' => $clientes 
-        );
+        $json = array('status' => 200);
 
         echo json_encode($json);
         

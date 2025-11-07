@@ -125,6 +125,51 @@ function validarTelefoneBR(numero) {
     return false;
 }
 
+function formatarCPFCNPJ(valor) {
+    const numeros = String(valor).replace(/\D/g, '');
+
+    if (numeros.length === 11) {
+        const parte1 = numeros.slice(0, 3);
+        const parte2 = numeros.slice(3, 6);
+        const parte3 = numeros.slice(6, 9);
+        const parte4 = numeros.slice(9, 11);
+
+        return `${parte1}.${parte2}.${parte3}-${parte4}`;
+
+    } else if (numeros.length === 14) {
+        const parte1 = numeros.slice(0, 2);
+        const parte2 = numeros.slice(2, 5);
+        const parte3 = numeros.slice(5, 8);
+        const parte4 = numeros.slice(8, 12);
+        const parte5 = numeros.slice(12, 14);
+
+        return `${parte1}.${parte2}.${parte3}/${parte4}-${parte5}`;
+    } else {
+        return valor; 
+    }
+}
+
+function formatarTelefone(valor) {
+    const numeros = String(valor).replace(/\D/g, '');
+
+    if (numeros.length === 11) {
+        const ddd = numeros.slice(0, 2);
+        const parte1 = numeros.slice(2, 7);
+        const parte2 = numeros.slice(7, 11);
+
+        return `(${ddd}) ${parte1}-${parte2}`;
+
+    } else if (numeros.length === 10) {
+        const ddd = numeros.slice(0, 2);
+        const parte1 = numeros.slice(2, 6);
+        const parte2 = numeros.slice(6, 10);
+
+        return `(${ddd}) ${parte1}-${parte2}`;
+    } else {
+        return valor;
+    }
+}
+
 function mostrarPopup(){
     document.body.style.overflow = 'hidden';
     popupBackground.style.display = 'flex';

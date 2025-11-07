@@ -62,8 +62,11 @@ function telaInicio() {
             </div>
             <div class="big-box">
                 <div class="box-header">
-                    <b>Envios Pendentes do Mês</b>
-                    <p>Cobranças que precisam ser enviadas nos próximos dias</p>
+                    <p>
+                        <b>Envios Pendentes do Mês</b>
+                        <br>
+                        Cobranças que precisam ser enviadas nos próximos dias
+                    </p>
                 </div>
                 <div class="box-text">
                 </div>
@@ -71,19 +74,29 @@ function telaInicio() {
 }
 
 function telaClientes() {
-   document.getElementById('tituloOpcao').textContent = 'Clientes'; 
-   document.title = "Clientes - Sistema de Cobrança";
+    document.getElementById('tituloOpcao').textContent = 'Clientes'; 
+    document.title = "Clientes - Sistema de Cobrança";
 
-   main.innerHTML = 
-   `<div class="big-box">
+    main.innerHTML = 
+        `<div class="big-box">
             <div class="box-header">
-                <b>Gerenciar Clientes</b>
-                <p>Cadastre e gerencie seus clientes para automação de cobranças</p>
-            </div>
-            <div>
+                <p>
+                    <b>Gerenciar Clientes</b>
+                    <br>
+                    Cadastre e gerencie seus clientes para automação de cobranças
+                </p>
                 <button id="btn-novo-cliente"><img src="../assets/images/plus.svg" alt=""> Novo Clientes</button>
             </div>
             <div class="box-text">
+                <table id="tabelaClientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>CNPJ/CPF</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div id="popupBackground">
@@ -91,7 +104,8 @@ function telaClientes() {
                 <div id="popup-header">
                     <p>
                         <b>Novo Cliente</b>
-                        <br>Preencha os dados do novo cliente
+                        <br>
+                        Preencha os dados do novo cliente
                     </p>
                     <div id="closeBtn">
                         <span>&times;</span>
@@ -102,7 +116,7 @@ function telaClientes() {
                     <input id="input-nome" type="text" placeholder="Digite o nome completo" required>
                     <label>Número de WhatsApp *</label>
                     <input id="input-telefone" type="text" placeholder="(00) 00000-0000" required>
-                    <label>CPF / CNPJ</label>
+                    <label>CPF / CNPJ *</label>
                     <input id="input-cnpj_cpf" type="text" placeholder="00.000.000/0000-00" required>
                     <div id="popup-buttons">
                         <button id="popup-btn-cancelar">Cancelar</button>
@@ -111,6 +125,8 @@ function telaClientes() {
                 </div>
             </div>
         </div>`;
+
+        mostrarClientes();
 
         const btnNovoCliente = document.getElementById('btn-novo-cliente');
         const btnAdicionar   = document.getElementById('popup-btn-adicionar');  
@@ -123,7 +139,7 @@ function telaClientes() {
         document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
         document.addEventListener('keydown', fecharPopup);
 
-       btnAdicionar.addEventListener('click', ()=>{
+        btnAdicionar.addEventListener('click', ()=>{
             if(verificarSePreenchido() == true){
                 const nome     = document.getElementById('input-nome').value;
                 const telefone = document.getElementById('input-telefone').value.replace(/[^\d]+/g, '');
@@ -149,6 +165,45 @@ function telaClientes() {
                 salvarCliente(chave);
            }
        })
+
+        async function mostrarClientes(){
+            try{
+                const requisicao = await fetch('../backend/clientes.php',{
+                    method: 'POST',
+                    body: JSON.stringify()
+                });
+
+                if(requisicao.ok == false){
+                    alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+                    return;
+                }
+
+                const resposta = await requisicao.json();
+                
+                if(resposta.status != 200){
+                    alert('Erro');
+                    return;
+                }
+
+
+                const tabela = document.getElementById('tabelaClientes');
+
+                for (var i = 0; i < resposta.clientes.length; i++) {
+                    var cliente = resposta.clientes[i];
+                    var row = document.createElement('tr');
+                    console.log(cliente);
+
+                    row.innerHTML =
+                        `<td>${cliente.nome}</td>
+                        <td>${formatarTelefone(cliente.telefone)}</td>
+                        <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
+                    tabela.appendChild(row);
+                }
+                
+            } catch(e){
+                console.error(e);
+            }
+       }
 
        async function salvarCliente(chave){
             try{
@@ -182,10 +237,11 @@ function telaAgendamentos() {
     main.innerHTML =
     `<div class="big-box">
             <div class="box-header">
-                <b>Gerenciar Agendamentos</b>
-                <p>Gerencie seus agendamentos de cobranças</p>
-            </div>
-            <div>
+                <p>
+                    <b>Gerenciar Agendamentos</b>
+                    <br>
+                    Gerencie seus disparos de cobranças
+                </p>
                 <button id="btn-novo-agendamento"><img src="../assets/images/plus.svg" alt=""> Novo Agendamento</button>
             </div>
             <div class="box-text">
@@ -239,8 +295,11 @@ function telaDisparos() {
     main.innerHTML =
     `<div class="big-box">
             <div class="box-header">
-                <b>Gerenciar Disparos</b>
-                <p>Gerencie seus disparos de cobranças</p>
+                <p>
+                    <b>Gerenciar Disparos</b>
+                    <br>
+                    Gerencie seus disparos de cobranças
+                </p>
             </div>
             <div class="box-text">
             </div>
@@ -250,7 +309,8 @@ function telaDisparos() {
                 <div id="popup-header">
                     <p>
                         <b>Novo Agendamento</b>
-                        <br>Preencha os dados do novo agendamento
+                        <br>
+                        Preencha os dados do novo agendamento
                     </p>
                     <div id="closeBtn">
                         <span>&times;</span>

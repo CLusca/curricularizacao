@@ -36,7 +36,7 @@ function telaInicio() {
                 <img class="dashboard-img-default" src="../assets/images/pessoas.svg" alt="">
                 <div class="box-text">
                     <b>Total de Clientes</b>
-                    <p>0</p>
+                    <p id="inicio-total-clientes">0</p>
                 </div>
             </div>
             <div class="medium-box">
@@ -71,6 +71,8 @@ function telaInicio() {
                 <div class="box-text">
                 </div>
             </div>`;
+    
+    dashboard();
 }
 
 function telaClientes() {
@@ -165,69 +167,6 @@ function telaClientes() {
                 salvarCliente(chave);
            }
        })
-
-        async function mostrarClientes(){
-            try{
-                const requisicao = await fetch('../backend/clientes.php',{
-                    method: 'POST',
-                    body: JSON.stringify()
-                });
-
-                if(requisicao.ok == false){
-                    alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
-                    return;
-                }
-
-                const resposta = await requisicao.json();
-                
-                if(resposta.status != 200){
-                    alert('Erro');
-                    return;
-                }
-
-
-                const tabela = document.getElementById('tabelaClientes');
-
-                for (var i = 0; i < resposta.clientes.length; i++) {
-                    var cliente = resposta.clientes[i];
-                    var row = document.createElement('tr');
-                    console.log(cliente);
-
-                    row.innerHTML =
-                        `<td>${cliente.nome}</td>
-                        <td>${formatarTelefone(cliente.telefone)}</td>
-                        <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
-                    tabela.appendChild(row);
-                }
-                
-            } catch(e){
-                console.error(e);
-            }
-       }
-
-       async function salvarCliente(chave){
-            try{
-                const requisicao = await fetch('../backend/salvarCliente.php',{
-                    method: 'POST',
-                    body: JSON.stringify(chave)
-                });
-
-                if(requisicao.ok == false){
-                    alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
-                    return;
-                }
-
-                const resposta = await requisicao.json();
-                
-                if(resposta.status == 200){
-                    alert('Cliente gravado com sucesso!');
-                    return;
-                }
-                
-            } catch(e){
-                console.error(e);
-            }
-       }
 }
 
 function telaAgendamentos() {
@@ -344,4 +283,110 @@ function telaDisparos() {
         document.getElementById('closeBtn').addEventListener('click', fecharPopup);
         document.getElementById('popup-btn-cancelar').addEventListener('click', fecharPopup);
         document.addEventListener('keydown', fecharPopup);
+}
+
+async function dashboard() {
+    try{
+        const requisicao = await fetch('../backend/dashboard.php',{
+            method: 'POST',
+            body: JSON.stringify()
+        });
+
+        if(requisicao.ok == false){
+            alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+            return;
+        }
+
+        const resposta = await requisicao.json();
+        
+        if(resposta.status != 200){
+            alert('Erro');
+            return;
+        }
+
+        console.log(resposta);
+
+        const totalClientes = document.getElementById('inicio-total-clientes');
+        totalClientes.textContent = resposta.clientes;
+
+        // const tabela = document.getElementById('tabelaClientes');
+
+        // for (var i = 0; i < resposta.clientes.length; i++) {
+        //     var cliente = resposta.clientes[i];
+        //     var row = document.createElement('tr');
+        //     console.log(cliente);
+
+        //     row.innerHTML =
+        //         `<td>${cliente.nome}</td>
+        //         <td>${formatarTelefone(cliente.telefone)}</td>
+        //         <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
+        //     tabela.appendChild(row);
+        // }
+        
+    } catch(e){
+        console.error(e);
+    }
+    }
+
+    async function mostrarClientes(){
+    try{
+        const requisicao = await fetch('../backend/clientes.php',{
+            method: 'POST',
+            body: JSON.stringify()
+        });
+
+        if(requisicao.ok == false){
+            alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+            return;
+        }
+
+        const resposta = await requisicao.json();
+        
+        if(resposta.status != 200){
+            alert('Erro');
+            return;
+        }
+
+
+        const tabela = document.getElementById('tabelaClientes');
+
+        for (var i = 0; i < resposta.clientes.length; i++) {
+            var cliente = resposta.clientes[i];
+            var row = document.createElement('tr');
+            console.log(cliente);
+
+            row.innerHTML =
+                `<td>${cliente.nome}</td>
+                <td>${formatarTelefone(cliente.telefone)}</td>
+                <td>${formatarCPFCNPJ(cliente.cnpj_cpf)}</td>`;
+            tabela.appendChild(row);
+        }
+        
+    } catch(e){
+        console.error(e);
+    }
+    }
+
+    async function salvarCliente(chave){
+    try{
+        const requisicao = await fetch('../backend/salvarCliente.php',{
+            method: 'POST',
+            body: JSON.stringify(chave)
+        });
+
+        if(requisicao.ok == false){
+            alert('ERRO INTERNO! TENTE NOVAMENTE MAIS TARDE');
+            return;
+        }
+
+        const resposta = await requisicao.json();
+        
+        if(resposta.status == 200){
+            alert('Cliente gravado com sucesso!');
+            return;
+        }
+        
+    } catch(e){
+        console.error(e);
+    }
 }

@@ -47,7 +47,7 @@
                     FROM agendamentos
                     INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
                     WHERE agendamentos.enviado = true
-                    AND agendamentos.id_cliente = $1";    
+                    AND agendamentos.id_empresa = $1";    
         $result = pg_query_params($conn, $query, array($id_empresa));
 
         if(!$result){

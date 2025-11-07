@@ -87,7 +87,7 @@
                     INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
                     WHERE agendamentos.enviado = true
                     AND agendamentos.data = CURRENT_DATE
-                    AND agendamentos.id_cliente = $1";    
+                    AND agendamentos.id_empresa = $1";    
         $result3 = pg_query_params($conn, $query3, array($id_empresa));
 
         if(!$result3){

@@ -57,7 +57,7 @@ function telaInicio() {
                 <img class="dashboard-img-default" src="../assets/images/calendario.svg" alt="">
                 <div class="box-text">
                     <b>Envios Hoje</b>
-                    <p>0</p>
+                    <p id="inicio-envios-hoje">0</p>
                 </div>
             </div>
             <div class="big-box">
@@ -345,10 +345,12 @@ async function dashboard() {
         const totalClientes   = document.getElementById('inicio-total-clientes');
         const enviosPendentes = document.getElementById('inicio-envios-pendentes');
         const valorPendente   = document.getElementById('inicio-valor-pendente');
+        const enviosHoje      = document.getElementById('inicio-envios-hoje');
 
         totalClientes.textContent   = resposta.clientes;
         enviosPendentes.textContent = resposta.enviosPendentes;
-        valorPendente.textContent = `R$ ${converterParaBrl(resposta.valorPendente)}`;
+        valorPendente.textContent   = `R$ ${converterParaBrl(resposta.valorPendente)}`;
+        enviosHoje.textContent      = resposta.enviosHoje;
 
         // const tabela = document.getElementById('tabelaClientes');
 

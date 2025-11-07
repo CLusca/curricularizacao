@@ -79,11 +79,32 @@
         }
 
 
+        $query3  = "SELECT agendamentos.id
+                    FROM agendamentos
+                    INNER JOIN clientes ON clientes.id = agendamentos.id_cliente
+                    WHERE agendamentos.enviado = true
+                    AND agendamentos.data = CURRENT_DATE";    
+        $result3 = pg_query_params($conn, $query3, array());
+
+        if(!$result3){
+            http_response_code(500);
+            error_log("Erro ao Executar SELECT na Tabela AGENDAMENTOS");
+            return;
+        } 
+
+        if (pg_num_rows($result3) > 0) {
+            $enviosHoje = pg_num_rows($result3);
+        } else {
+            $enviosHoje = 0;
+        }
+
+
         $json = array(
             'status'          => 200,
             'clientes'        => $clientes, 
             'enviosPendentes' => $enviosPendentes,
-            'valorPendente'   => $valorPendente
+            'valorPendente'   => $valorPendente,
+            'enviosHoje'      => $enviosHoje
         );
 
         echo json_encode($json);

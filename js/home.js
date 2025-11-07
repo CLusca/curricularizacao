@@ -250,7 +250,7 @@ function telaAgendamentos() {
                 const cliente = document.getElementById('agendamento-cliente').value;
                 const data    = document.getElementById('input-data').value;
                 const meses   = document.getElementById('input-meses').value.replace(/[^\d]+/g, '');
-                const valor   = document.getElementById('input-valor').value.replace(/[^\d]+/g, '');
+                const valor   = document.getElementById('input-valor').value;
 
                 const chave = {
                     'cliente' : cliente,
@@ -259,8 +259,6 @@ function telaAgendamentos() {
                     'valor' : valor
                     
                 }
-
-                console.log(chave);
 
                 salvarAgendamento(chave);
            }

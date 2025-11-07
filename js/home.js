@@ -40,21 +40,21 @@ function telaInicio() {
                 </div>
             </div>
             <div class="medium-box">
-                <img class="dashboard-img-orange" src="../assets/images/relogio.svg" alt="">
+                <img class="dashboard-img-orange" src="../assets/images/relogio-laranja.svg" alt="">
                 <div class="box-text">
                     <b>Envios Pendentes</b>
                     <p id="inicio-envios-pendentes">0</p>
                 </div>
             </div>
             <div class="medium-box">
-                <img class="dashboard-img-green" src="../assets/images/dolar.svg" alt="">
+                <img class="dashboard-img-green" src="../assets/images/dolar-verde.svg" alt="">
                 <div class="box-text">
                     <b>Valor Pendente</b>
                     <p id="inicio-valor-pendente">R$ 0,00</p>
                 </div>
             </div>
             <div class="medium-box">
-                <img class="dashboard-img-default" src="../assets/images/calendario.svg" alt="">
+                <img class="dashboard-img-default" src="../assets/images/disparar.svg" alt="">
                 <div class="box-text">
                     <b>Envios Hoje</b>
                     <p id="inicio-envios-hoje">0</p>
@@ -281,7 +281,7 @@ function telaDisparos() {
             </div>
             <div id="box-content">
                 <div class="sem_dados">
-                    <img src="../assets/images/enviar.svg">
+                    <img src="../assets/images/disparar-verde.svg">
                     <p>Nenhum disparo encontrado</p>
                     <p>Comece adicionando um novo agendamento</p>
                 </div>
